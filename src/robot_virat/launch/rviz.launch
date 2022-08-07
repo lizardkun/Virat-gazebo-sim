@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<launch>
+<!-- load file -->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find robot_virat)/urdf/my_robot.urdf'" />
+
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <param name="use_gui" value="true" />
+  </node>
+
+  <!--Publish robot state and transforms-->
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher"></node>
+  <node name="virat_img_processor" pkg="robot_virat" type="opencv.py" />
+
+  <!--Launch rviz-->
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find robot_virat)/launch/virat.rviz"></node>
+
+</launch>
+  

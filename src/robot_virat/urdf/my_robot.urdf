@@ -1,0 +1,243 @@
+<?xml version="1.0"?>
+
+<robot name="my_robot">
+
+  <!-- body -->
+  <link name="body">
+    <visual>
+      <origin rpy="0.0 0 0" xyz="0 0 0" />
+      <geometry>
+        <mesh filename="package://robot_virat/meshes/body/bot2.dae" />
+      </geometry>
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://robot_virat/meshes/body/bot2.dae" />
+      </geometry>
+      <origin rpy="0.0 0 0" xyz="0 0 0" />
+    </collision>
+    <inertial>
+      <mass value="5" />
+      <inertia ixx="2" ixy="0.0" ixz="0.0" iyy="3" iyz="0.0" izz="1" />
+      <origin rpy="0.0 0 0" xyz="0 0 0" />
+    </inertial>
+  </link>
+
+  <!-- wheel 1 -->
+  <link name="wheel1">
+    <visual>
+
+      <geometry>
+        <mesh filename="package://robot_virat/meshes/wheels/tyre1.dae" />
+      </geometry>
+
+    </visual>
+    <collision>
+
+      <geometry>
+        <mesh filename="package://robot_virat/meshes/wheels/tyre1.dae" />
+      </geometry>
+    </collision>
+    <inertial>
+      <mass value="0.5" />
+
+      <inertia ixx="0.002" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.002" />
+
+    </inertial>
+  </link>
+
+  <joint name="wheeler1" type="continuous">
+    <parent link="body" />
+    <child link="wheel1" />
+    <origin rpy="0 0 0" xyz="0 0.323 0" />
+    <axis xyz="0 1 0" />
+  </joint>
+
+  <!-- wheel 2 -->
+  <link name="wheel2">
+    <visual>
+
+      <geometry>
+        <mesh filename="package://robot_virat/meshes/wheels/tyre1.dae" />
+      </geometry>
+      <!-- <origin rpy="0 0 0" xyz="0 0 0"/> -->
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://robot_virat/meshes/wheels/tyre1.dae" />
+      </geometry>
+      <!-- <origin rpy="0 0 0" xyz="0 0 0"/> -->
+    </collision>
+    <inertial>
+      <mass value="0.5" />
+      <!-- <origin rpy="0 0 0" xyz="0 0 0"/> -->
+      <inertia ixx="0.002" ixy="0.0" ixz="0.0" iyy="0.0" iyz="0.0" izz="0.002" />
+    </inertial>
+  </link>
+  <joint name="wheeler2" type="continuous">
+    <parent link="body" />
+    <child link="wheel2" />
+    <origin rpy="0 0 0" xyz="0 -0.323 0" />
+    <axis xyz="0 1 0" />
+  </joint>
+  <!-- castor wheel -->
+  <link name="castors">
+    <visual>
+      <geometry>
+        <mesh filename="package://robot_virat/meshes/wheels/castors1.dae" />
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+    </visual>
+    <collision>
+      <geometry>
+        <mesh filename="package://robot_virat/meshes/wheels/castors1.dae" />
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+    </collision>
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <mass value="0.5" />
+      <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
+    </inertial>
+  </link>
+
+
+  <joint name="castorer" type="fixed">
+    <origin rpy="0 0 0" xyz="0.48 0 0.02" />
+    <parent link="body" />
+    <child link="castors" />
+    <axis xyz="0 0 1" />
+  </joint>
+
+
+  <!-- Camera -->
+  <joint name="camera_joint" type="fixed">
+    <axis xyz="0 1 0" />
+    <origin xyz="0.73 0 1.18" rpy="0 0.45 0" />
+    <parent link="body" />
+    <child link="camera_link" />
+  </joint>
+
+
+  <link name="camera_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.1 0.1 0.1" />
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <box size="0.1 0.1 0.1" />
+      </geometry>
+      <material name="red" />
+    </visual>
+
+    <inertial>
+      <mass value="1e-5" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+<!-- dummy link created to get rid of an error -->
+  <link name="dummy"></link>
+
+  <joint name="dummy_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+    <parent link="dummy" />
+    <child link="body" />
+  </joint>
+
+  <!-- camera plugin -->
+  <gazebo reference="camera_link">
+    <sensor type="camera" name="camera1">
+      <update_rate>30.0</update_rate>
+      <camera name="head">
+        <horizontal_fov>1.3962634</horizontal_fov>
+        <image>
+          <width>800</width>
+          <height>800</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.02</near>
+          <far>300</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+      <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+        <alwaysOn>true</alwaysOn>
+        <updateRate>0.0</updateRate>
+        <cameraName>robot_virat/camera1</cameraName>
+        <imageTopicName>image_raw</imageTopicName>
+        <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+        <frameName>camera_link</frameName>
+        <hackBaseline>0.07</hackBaseline>
+        <distortionK1>0.0</distortionK1>
+        <distortionK2>0.0</distortionK2>
+        <distortionK3>0.0</distortionK3>
+        <distortionT1>0.0</distortionT1>
+        <distortionT2>0.0</distortionT2>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+  <!-- differential drive plugin -->
+  <gazebo>
+    <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+
+
+      <updateRate>10</updateRate>
+
+
+      <leftJoint>wheeler1</leftJoint>
+
+
+      <rightJoint>wheeler2</rightJoint>
+
+
+      <wheelSeparation>0.646</wheelSeparation>
+
+      <wheelAcceleration>0</wheelAcceleration>
+
+      <wheelTorque>1</wheelTorque>
+
+      <commandTopic>virat/cmd_vel</commandTopic>
+
+      <odometryTopic>odom</odometryTopic>
+
+      <odometryFrame>odom</odometryFrame>
+
+      <robotBaseFrame>body</robotBaseFrame>
+
+      <odometrySource>1</odometrySource>
+
+      <publishWheelTF>true</publishWheelTF>
+
+      <publishOdomTF>true</publishOdomTF>
+
+      <publishWheelJointState>true</publishWheelJointState>
+
+      <legacyMode>false</legacyMode>
+
+      <alwaysOn>true</alwaysOn>
+
+      <rosDebugLevel>na</rosDebugLevel>
+      
+      <publishTf>1</publishTf>
+    </plugin>
+  </gazebo>
+
+  <gazebo>
+    <plugin name="joint_state_publisher" filename="libgazebo_ros_joint_state_publisher.so">
+      <jointName>wheeler1,wheeler2</jointName>
+    </plugin>
+  </gazebo>
+</robot>
