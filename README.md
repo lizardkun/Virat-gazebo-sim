@@ -10,7 +10,7 @@ Gazebo simulation of a pothole detecting remote controlled robot
 ### Virat Jr uses openCV to detect potholes:
 ![Screenshot from 2022-08-07 17-35-39](https://user-images.githubusercontent.com/94188928/183289708-b3437405-b9f1-4af1-a9fe-967dc55a6cd3.png)
 ### The detected potholes are mapped on RViz with pointclouds
-![Screenshot from 2022-08-07 17-45-39](https://user-images.githubusercontent.com/94188928/183290106-fda5147e-4321-42be-b933-53efb4354e29.png)
+![image](https://user-images.githubusercontent.com/94188928/183304239-18e72462-9dc9-4416-a63d-06dcf48656c2.png)
 
 ### Altogether:
-
+![Screenshot from 2022-08-07 17-47-25](https://user-images.githubusercontent.com/94188928/183304228-45ab1314-50a8-4205-b2ac-fb0acf3d4373.png)
