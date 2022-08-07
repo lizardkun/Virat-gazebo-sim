@@ -13,7 +13,7 @@ from nav_msgs.msg import Odometry
 from std_msgs.msg import Header
 
 header = Header()
-header.frame_id = "body"
+header.frame_id = "camera_link"
 
 
 class camera_1:
@@ -22,9 +22,48 @@ class camera_1:
         self.image_sub = rospy.Subscriber(
             "robot_virat/camera1/image_raw", Image, self.callback
         )
-        self.pub = rospy.Publisher(
-            "robot_virat/PointCloud", PointCloud2, queue_size=3
+        self.pub = rospy.Publisher("robot_virat/PointCloud", PointCloud2, queue_size=3)
+        self.cam_info = rospy.Subscriber(
+            "/robot_virat/camera1/camera_info", CameraInfo, self.callback_2
         )
+
+        self.Kmatrix = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+    def callback_2(self, msg):
+        self.Kmatrix = msg.K
+
+    def pixels_to_meters(self, u, v):
+        h = 1.18
+        d = 0.73
+        intrinsic_matrix = np.reshape(self.Kmatrix, (3, 3))
+
+        yaw = 0
+        pitch = -0.45
+        roll = 0
+        field_of_view_deg = 45
+        inverse_intrinsic_matrix = np.linalg.inv(intrinsic_matrix)
+
+        cy, sy = np.cos(yaw), np.sin(yaw)
+        cp, sp = np.cos(pitch), np.sin(pitch)
+        cr, sr = np.cos(roll), np.sin(roll)
+        rotation_ground_to_cam = np.array(
+            [
+                [cr * cy + sp * sr + sy, cr * sp * sy - cy * sr, -cp * sy],
+                [cp * sr, cp * cr, sp],
+                [cr * sy - cy * sp * sr, -cr * cy * sp - sr * sy, cp * cy],
+            ]
+        )
+        rotation_cam_to_ground = rotation_ground_to_cam.T
+        translate_cam_to_ground = np.array([0, -h, 0])
+
+        n = np.array([0, 1, 0])
+        nc = (rotation_cam_to_ground.T).dot(n)
+
+        uv = np.array([u, v, 1])
+        Kinv_dot_uv = inverse_intrinsic_matrix.dot(uv)
+        nc_dot_prod = nc.dot(Kinv_dot_uv)
+        new_point = h * Kinv_dot_uv / nc_dot_prod
+        return new_point
 
     def callback(self, data):
 
@@ -54,7 +93,8 @@ class camera_1:
                 for c in cnt:
                     for p in c:
                         # apending the contour points to list 'points'
-                        points.append((p[0] / 50, p[1] / 50, 0, 1))
+                        new_p = self.pixels_to_meters(p[0], p[1])
+                        points.append((new_p[2], -new_p[0], -new_p[1], 1))
                 if cv2.contourArea(cnt) < 50000:
                     continue
         cv2.imshow("feed", cv_image)
@@ -90,3 +130,4 @@ def main():
 if __name__ == "__main__":
     rospy.init_node("virat_img_processor")
     main()
+
