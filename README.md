@@ -11,7 +11,9 @@ Gazebo simulation of a pothole detecting remote controlled robot
 ![Screenshot from 2022-08-07 17-35-39](https://user-images.githubusercontent.com/94188928/183289708-b3437405-b9f1-4af1-a9fe-967dc55a6cd3.png)
 ### The detected potholes are mapped on RViz with pointclouds
 The pixels generated from the contours are converted to ground frame distances wrt to the camera using inverse perspective mapping (this formula is used):
+
 ![image](https://user-images.githubusercontent.com/94188928/183304762-854ea2c4-e679-457e-8b06-b730e416202c.png)
+
 The rviz map we get:
 
 ![image](https://user-images.githubusercontent.com/94188928/183304239-18e72462-9dc9-4416-a63d-06dcf48656c2.png)
