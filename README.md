@@ -13,4 +13,5 @@ Gazebo simulation of a pothole detecting remote controlled robot
 ![image](https://user-images.githubusercontent.com/94188928/183304239-18e72462-9dc9-4416-a63d-06dcf48656c2.png)
 
 ### Altogether:
-![Screenshot from 2022-08-07 17-47-25](https://user-images.githubusercontent.com/94188928/183304228-45ab1314-50a8-4205-b2ac-fb0acf3d4373.png)
+
+![image](https://user-images.githubusercontent.com/94188928/183304307-d6dc0cff-0dd3-4614-94ca-3b278170c752.png)
