@@ -17,5 +17,4 @@ The rviz map we get:
 ![image](https://user-images.githubusercontent.com/94188928/183304239-18e72462-9dc9-4416-a63d-06dcf48656c2.png)
 
 ### Altogether:
-
-![image](https://user-images.githubusercontent.com/94188928/183304307-d6dc0cff-0dd3-4614-94ca-3b278170c752.png)
+[Screencast from 08-07-2022 11:49:20 PM.webm](https://user-images.githubusercontent.com/94188928/183305337-64f8ff55-a0ba-43ca-806a-061a0d42b180.webm)
