@@ -27,22 +27,28 @@ class camera_1:
             "/robot_virat/camera1/camera_info", CameraInfo, self.callback_2
         )
 
-        self.Kmatrix = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+        self.KList = [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
+    # subscribing to CameraInfo to obtain the intrinsic 'K' matrix, although it is in the form of the list right now
     def callback_2(self, msg):
-        self.Kmatrix = msg.K
+        self.KList = msg.K
 
+    # function that takes in pixels from contours and converts into distance with respect to the camera
     def pixels_to_meters(self, u, v):
-        h = 1.18
+        h = 1.18 #height of camera from the ground
         d = 0.73
-        intrinsic_matrix = np.reshape(self.Kmatrix, (3, 3))
+        # converting the K list into a 3x3 matrix
+        intrinsic_matrix = np.reshape(self.KList, (3, 3))
 
         yaw = 0
+        # the camera tilts downward by a parameter of 0.45, setting pitch to -0.45 corrects it
         pitch = -0.45
         roll = 0
         field_of_view_deg = 45
+        # finding inverse of intrinsic matrix
         inverse_intrinsic_matrix = np.linalg.inv(intrinsic_matrix)
 
+        #----------the rotation matrix-----------------------------------------------
         cy, sy = np.cos(yaw), np.sin(yaw)
         cp, sp = np.cos(pitch), np.sin(pitch)
         cr, sr = np.cos(roll), np.sin(roll)
@@ -53,9 +59,11 @@ class camera_1:
                 [cr * sy - cy * sp * sr, -cr * cy * sp - sr * sy, cp * cy],
             ]
         )
+        # finding the inverse of the rotation matrix, which is just its transpose
         rotation_cam_to_ground = rotation_ground_to_cam.T
-        translate_cam_to_ground = np.array([0, -h, 0])
 
+        # finding the Xc,Yc.Zc coordinates wrt camera from the pixel coordinates (u,v)
+        # The specific formula used is mentioned in the README file
         n = np.array([0, 1, 0])
         nc = (rotation_cam_to_ground.T).dot(n)
 
@@ -92,8 +100,9 @@ class camera_1:
                 # making a list of (x,y) points in contour to generate a pointcloud
                 for c in cnt:
                     for p in c:
-                        # apending the contour points to list 'points'
+                        #processing the contour points using the function 'pixels_to_meters
                         new_p = self.pixels_to_meters(p[0], p[1])
+                        # apending the processed contour points to list 'points', note the change in coordinate systems
                         points.append((new_p[2], -new_p[0], -new_p[1], 1))
                 if cv2.contourArea(cnt) < 50000:
                     continue
