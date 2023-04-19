@@ -1,0 +1,18 @@
+obstacle_range: 100
+raytrace_range: 200
+footprint: [[1, 0.4], [1, -0.4],[-1,-0.4],[-1, 0.4]]
+# robot_radius: ir_of_robot
+# inflation_radius: 0.1
+
+observation_sources: point_cloud_sensor
+
+# laser_scan_sensor: {sensor_frame: base_link, data_type: LaserScan, topic: laser, marking: true, clearing: true}
+
+point_cloud_sensor: {
+  sensor_frame: base_link, 
+  data_type: PointCloud2, 
+  topic: /robot_virat/PointCloud, 
+  marking: true, 
+  clearing: true,
+  obstacle_range: 10,
+  raytrace_range: 10 }

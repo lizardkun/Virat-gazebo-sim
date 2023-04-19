@@ -10,5 +10,5 @@
     <arg name="verbose" value="true" />
   </include>
   <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-file $(find robot_virat)/urdf/my_robot.urdf -urdf -z 0.2 -model my_robot" />
-
+  <node pkg="tf" type="static_transform_publisher" name="map_to_odom" args="0.0 0 0 0 0 0 map odom 30" />
 </launch>

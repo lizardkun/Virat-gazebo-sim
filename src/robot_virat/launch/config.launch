@@ -1,0 +1,13 @@
+<launch>
+
+    <node pkg="robot_virat" type="camera" name="camera1" output="screen">
+     <param name="sensor_param" value="param_value" />
+  </node>
+  <node pkg="robot_virat" type="odom_node_type" name="odom" output="screen">
+     <param name="odom_param" value="param_value" />
+  </node>
+  <node pkg="robot_virat" type="transform_configuration_type" name="transform_configuration_name" output="screen">
+     <param name="transform_configuration_param" value="param_value" />
+  </node>
+ 
+ </launch> 

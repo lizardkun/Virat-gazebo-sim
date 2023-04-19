@@ -3,7 +3,7 @@
 <robot name="my_robot">
 
   <!-- body -->
-  <link name="body">
+  <link name="base_link">
     <visual>
       <origin rpy="0.0 0 0" xyz="0 0 0" />
       <geometry>
@@ -47,7 +47,7 @@
   </link>
 
   <joint name="wheeler1" type="continuous">
-    <parent link="body" />
+    <parent link="base_link" />
     <child link="wheel1" />
     <origin rpy="0 0 0" xyz="0 0.323 0" />
     <axis xyz="0 1 0" />
@@ -75,7 +75,7 @@
     </inertial>
   </link>
   <joint name="wheeler2" type="continuous">
-    <parent link="body" />
+    <parent link="base_link" />
     <child link="wheel2" />
     <origin rpy="0 0 0" xyz="0 -0.323 0" />
     <axis xyz="0 1 0" />
@@ -104,7 +104,7 @@
 
   <joint name="castorer" type="fixed">
     <origin rpy="0 0 0" xyz="0.48 0 0.02" />
-    <parent link="body" />
+    <parent link="base_link" />
     <child link="castors" />
     <axis xyz="0 0 1" />
   </joint>
@@ -114,7 +114,7 @@
   <joint name="camera_joint" type="fixed">
     <axis xyz="0 1 0" />
     <origin xyz="0.73 0 1.18" rpy="0 0.45 0" />
-    <parent link="body" />
+    <parent link="base_link" />
     <child link="camera_link" />
   </joint>
 
@@ -146,9 +146,10 @@
   <link name="dummy"></link>
 
   <joint name="dummy_joint" type="fixed">
+    <axis xyz="0 1 0" />
     <origin xyz="0 0 0" rpy="0 0 0" />
     <parent link="dummy" />
-    <child link="body" />
+    <child link="base_link" />
   </joint>
 
   <!-- camera plugin -->
@@ -215,7 +216,7 @@
 
       <odometryFrame>odom</odometryFrame>
 
-      <robotBaseFrame>body</robotBaseFrame>
+      <robotBaseFrame>base_link</robotBaseFrame>
 
       <odometrySource>1</odometrySource>
 
