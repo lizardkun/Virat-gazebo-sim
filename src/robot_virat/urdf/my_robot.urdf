@@ -210,7 +210,7 @@
 
       <wheelTorque>1</wheelTorque>
 
-      <commandTopic>virat/cmd_vel</commandTopic>
+      <commandTopic>/cmd_vel</commandTopic>
 
       <odometryTopic>odom</odometryTopic>
 
