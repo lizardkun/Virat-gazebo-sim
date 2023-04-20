@@ -8,7 +8,7 @@ import sys, select, termios, tty
 # everything works except 's' also moves forward for some reason, i think it may be a physics error
 
 rospy.init_node("virat_teleop")
-pub = rospy.Publisher("virat/cmd_vel", Twist, queue_size=3)
+pub = rospy.Publisher("/cmd_vel", Twist, queue_size=3)
 
 msg = """
 VIRAT CONTROLLER
